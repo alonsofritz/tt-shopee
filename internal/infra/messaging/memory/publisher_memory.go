@@ -27,6 +27,14 @@ func (p *TicketPublisherMemory) Publish(ticket model.Ticket) error {
 	return nil
 }
 
+func (p *TicketPublisherMemory) StartConsumer(handler func(ticket model.Ticket)) {
+	go func() {
+		for ticket := range p.queue {
+			handler(ticket)
+		}
+	}()
+}
+
 func (p *TicketPublisherMemory) Close() {
 	close(p.queue)
 }

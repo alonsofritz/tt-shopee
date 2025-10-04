@@ -12,6 +12,7 @@ import (
 
 	"github.com/alonsofritz/tt-shopee/config"
 	"github.com/alonsofritz/tt-shopee/internal/api/router"
+	"github.com/alonsofritz/tt-shopee/internal/domain/model"
 	"github.com/alonsofritz/tt-shopee/internal/infra/messaging/memory"
 	"github.com/alonsofritz/tt-shopee/internal/infra/persistence"
 	"github.com/alonsofritz/tt-shopee/internal/service"
@@ -29,6 +30,10 @@ func main() {
 
 	publisher := memory.NewTicketPublisherMemory(10)
 	defer publisher.Close()
+
+	publisher.StartConsumer(func(ticket model.Ticket) {
+		log.Printf("Processando ticket: %+v\n", ticket)
+	})
 
 	ticketService := &service.TicketService{
 		ShowRepo:  showRepo,
