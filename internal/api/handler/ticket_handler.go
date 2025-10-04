@@ -46,15 +46,18 @@ func (h *TicketHandler) ProcessTicketHandler(w http.ResponseWriter, r *http.Requ
 			"status":  "error",
 			"error":   err.Error(),
 		})
+
+		w.WriteHeader(http.StatusBadRequest)
 	} else {
 		results = append(results, map[string]interface{}{
 			"show_id": payload.ShowID,
 			"user_id": payload.UserID,
 			"status":  "ok",
 		})
+
+		w.WriteHeader(http.StatusAccepted)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(results)
 }
