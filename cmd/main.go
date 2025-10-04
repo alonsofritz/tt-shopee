@@ -12,6 +12,9 @@ import (
 
 	"github.com/alonsofritz/tt-shopee/config"
 	"github.com/alonsofritz/tt-shopee/internal/api/router"
+	"github.com/alonsofritz/tt-shopee/internal/infra/messaging/memory"
+	"github.com/alonsofritz/tt-shopee/internal/infra/persistence"
+	"github.com/alonsofritz/tt-shopee/internal/service"
 )
 
 func main() {
@@ -21,7 +24,19 @@ func main() {
 	fmt.Printf("APP_VERSION: %s\n", cfg.AppVersion)
 	fmt.Printf("SERVER_PORT: %s\n", cfg.ServerPort)
 
-	mux := router.SetupRouter()
+	showRepo := persistence.NewShowRepoMem()
+	userRepo := persistence.NewUserRepoMem()
+
+	publisher := memory.NewTicketPublisherMemory(10)
+	defer publisher.Close()
+
+	ticketService := &service.TicketService{
+		ShowRepo:  showRepo,
+		UserRepo:  userRepo,
+		Publisher: publisher,
+	}
+
+	mux := router.SetupRouter(ticketService)
 	server := &http.Server{
 		Addr:    fmt.Sprintf(":%s", cfg.ServerPort),
 		Handler: mux,
