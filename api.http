@@ -1,0 +1,5 @@
+###
+GET http://localhost:3001/health
+
+###
+[{"show_id":"230920","user_id":1}]
