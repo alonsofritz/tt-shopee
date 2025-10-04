@@ -1,6 +1,6 @@
 package dto
 
 type TicketRequestDTO struct {
-	ShowID string `json:"showId"`
-	UserID int    `json:"userId"`
+	ShowID string `json:"show_id"`
+	UserID int    `json:"user_id"`
 }
