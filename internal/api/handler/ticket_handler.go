@@ -52,7 +52,7 @@ func (h *TicketHandler) ProcessTicketHandler(w http.ResponseWriter, r *http.Requ
 		results = append(results, map[string]interface{}{
 			"show_id": payload.ShowID,
 			"user_id": payload.UserID,
-			"status":  "ok",
+			"status":  "processing",
 		})
 
 		w.WriteHeader(http.StatusAccepted)
