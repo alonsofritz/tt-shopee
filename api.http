@@ -2,4 +2,9 @@
 GET http://localhost:3001/health
 
 ###
-[{"show_id":"230920","user_id":1}]
+curl -X POST http://localhost:3001/tickets \
+  -H "Content-Type: application/json" \
+  -d '{
+    "show_id": "230920",
+    "user_id": 1
+  }'
